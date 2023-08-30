@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
+  <display-name>MyPage</display-name>
+  
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <context-param>
+   		<param-name>INIT_PARAM</param-name>
+   		<param-value>web.xml에 저장한 초기화 매개변수</param-value>
+   </context-param>
+   
+   <context-param>
+	  <param-name>OracleDriver</param-name>	<!-- 드라이버 이름 -->
+	  <param-value>oracle.jdbc.OracleDriver</param-value>
+	</context-param>
+	<context-param>
+	  <param-name>OracleURL</param-name>	<!-- 접속  URL -->
+	  <param-value>jdbc:oracle:thin:@localhost:1521:xe</param-value>
+	</context-param>
+	<context-param>
+	  <param-name>OracleId</param-name>	<!-- 계정 아이디 -->
+	  <param-value>HIS</param-value>
+	</context-param>
+	<context-param>
+	  <param-name>OraclePwd</param-name>	<!-- 패스워드 -->
+	  <param-value>1234</param-value>
+	</context-param>
+	
+	<!-- 게시판 페이징 처리를 위한 파라미터 추가 [예제9-3]-->
+	<!-- 한페이지에 출력할 게시물의 갯수 설정 : 10개씩 출력 -->
+	<context-param>
+		<param-name>POSTS_PER_PAGE</param-name>
+		<param-value>10</param-value>
+	</context-param>
+	<!-- 한블럭당 출력할 페이지번호의 갯수 설정 : 5페이지씩 출력 -->
+	<context-param>
+		<param-name>PAGES_PER_BLOCK</param-name>
+		<param-value>5</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>POSTS_PER_PAGE_MAIN</param-name>
+		<param-value>5</param-value>
+	</context-param>
+	<!-- 한블럭당 출력할 페이지번호의 갯수 설정 : 5페이지씩 출력 -->
+	<context-param>
+		<param-name>PAGES_PER_BLOCK</param-name>
+		<param-value>5</param-value>
+	</context-param>
+	
+	<!-- 세션 유지시간 설정2 : web.xml에서는 분단위로 지정한다. -->
+	<session-config>
+	   <session-timeout>20</session-timeout>
+	</session-config>
+	
+	<filter>
+	  <filter-name>SetCharEncoding</filter-name>
+	  <filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
+	    <init-param>
+	      <param-name>encoding</param-name>
+	      <param-value>utf-8</param-value>
+	    </init-param>
+	</filter>
+	<filter-mapping>
+	  <filter-name>SetCharEncoding</filter-name>
+	  <url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- model2 방식의 자료실형 게시판 구하기 -->
+	<!-- 리스트(목록) 서블릿 매핑 -->
+	<servlet>
+		<servlet-name>MVCBoardList</servlet-name> <!-- 서블릿 이름 -->
+		<servlet-class>model2.board.ListController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MVCBoardList</servlet-name>
+		<url-pattern>/board/list.do</url-pattern> <!-- 요청명 -->
+	</servlet-mapping>
+	
+	<!-- 글쓰기로 진입하기 위한 매핑 -->
+	<servlet>
+		<servlet-name>MVCBoardWrite</servlet-name> <!-- 서블릿 이름 -->
+		<servlet-class>model2.board.WriteController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MVCBoardWrite</servlet-name>
+		<url-pattern>/board/write.do</url-pattern> <!-- 요청명 -->
+	</servlet-mapping>
+	
+	<!-- 파일 첨부시 제한 용량은 1메가로 지정 -->
+	<context-param>
+		<param-name>maxPostSize</param-name>
+		<param-value>1024000</param-value>
+	</context-param>
+ 
+  
+</web-app>
